@@ -44,7 +44,6 @@ def expandir(nodo: Nodo) -> list:
             nuevoEstado = aplicaOperador(op, nodo.estado)
             nuevoNodo = Nodo(nuevoEstado, op, nodo.costeCamino + 1, nodo.profundidad + 1, nodo)
             sucesores.append(nuevoNodo)
-
     #....
 
     return sucesores
@@ -59,6 +58,7 @@ def BFS() -> None:
     abiertos.append(raiz)
 
     # Completar el resto del código
+    
     while len(abiertos) > 0 and not objetivo:
         raiz = abiertos.pop(0)
         cerrados.append(raiz)
