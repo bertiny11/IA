@@ -1,7 +1,6 @@
 from __future__ import annotations
 from dataclasses import dataclass
 from NPuzle_Alum import tEstado, esValido, aplicaOperador, estadoInicial, testObjetivo, operadores
-#golaaaaaaa
 
 @dataclass
 class Nodo:
