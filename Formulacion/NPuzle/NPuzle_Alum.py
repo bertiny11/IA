@@ -20,12 +20,12 @@ operadores = {8: "ARRIBA", 2: "ABAJO", 4: "IZQDA", 6: "DRCHA"}
 
 
 def estadoInicial() -> tEstado:
-    return tEstado(np.array([[0, 2, 3], [1, 4, 5], [8, 7, 6]]))
+    return tEstado(np.array([[0, 1], [2, 3]]))
     # return tEstado(np.array([[0, 2, 3], [1, 4, 5], [8, 7, 6]])) # Pruebe esta combinación tras haber comprobado la anterior
 
 
 def estadoObjetivo() -> tEstado:
-    return tEstado(np.array([[1, 2, 3], [0, 4, 5], [8, 7, 6]]))
+    return tEstado(np.array([[1, 3], [0, 2]]))
     # return tEstado(np.array([[1, 3, 0], [8, 2, 4], [7, 6, 5]])) #Pruebe esta combinación tras haber comprobado la anterior
 
 def aplicaOperador(op: int, estado: tEstado) -> tEstado:
@@ -76,7 +76,7 @@ def esValido(op: int, estado: tEstado) -> bool:
             if estado.col > 0:
                 valido = True
         case "DRCHA":
-            if estado.col < estado.col -1:
+            if estado.col < estado.col +1:
                 valido = True
     #....    
     
