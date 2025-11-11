@@ -31,17 +31,9 @@ def testObjetivo(estado: tEstado) -> bool:
 
 def esValido(estado: tEstado, op: str) -> bool:
     
-    # match operadores[op]:
-    #     case "ARRIBA_A":
-    #         if(estado.f[1] - 1 < 0):
-    #             return False
-    #         return fila_vacia > 0
-    #     case "ABAJO":
-    #         return fila_vacia < N - 1
-    #     case "IZQDA":
-    #         return col_vacia > 0
-    #     case "DRCHA":
-    #         return col_vacia < N - 1
+    match operadores[op]:
+        case "ARRIBA_A":
+            pass
     return False
 
 def aplicaOperador(op: str, estado: tEstado) -> tEstado:
@@ -61,48 +53,97 @@ def aplicaOperador(op: str, estado: tEstado) -> tEstado:
         case "ABAJO_A":
             # Mover la pieza A hacia abajo
             nuevoEstado.matriz[estado.f[1]-1, estado.c[1]] = 0  # Actualizar la matriz
+            nuevoEstado.matriz[estado.f[1], estado.c[1]-1] = 0
+            nuevoEstado.matriz[estado.f[1], estado.c[1]+1] = 0
+
             nuevoEstado.matriz[estado.f[1]+2, estado.c[1]] = 1
             nuevoEstado.matriz[estado.f[1]+1, estado.c[1]-1] = 1
             nuevoEstado.matriz[estado.f[1]+1, estado.c[1]+1] = 1
             nuevoEstado.f[1] = nuevoEstado.f[1]+1  # Actualizar la posición de la pieza A
         case "IZQDA_A":
             # Mover la pieza A hacia la izquierda
-            pass
+            nuevoEstado.matriz[estado.f[1], estado.c[1]+1] = 0  # Actualizar la matriz
+            nuevoEstado.matriz[estado.f[1]-1, estado.c[1]] = 0
+            nuevoEstado.matriz[estado.f[1]+1, estado.c[1]] = 0
 
-            
-    #         nuevoEstado.matriz[fila_vacia, col_vacia] = nuevoEstado.matriz[pieza_fila, pieza_col]
-    #         nuevoEstado.matriz[pieza_fila, pieza_col] = 0
-            
-    #         nuevoEstado.f[2] = pieza_fila
-    #         nuevoEstado.c[2] = pieza_col
-    #         nuevoEstado.f[0] = pieza_fila - 1
-            
-    #     case "ABAJO":
-    #         fila_vacia = estado.f[2]
-    #         col_vacia = estado.c[2]
-    #         pieza_fila = estado.f[0]
-    #         pieza_col = estado.c[0]
-            
-    #         nuevoEstado.matriz[fila_vacia, col_vacia] = nuevoEstado.matriz[pieza_fila, pieza_col]
-    #         nuevoEstado.matriz[pieza_fila, pieza_col] = 0
-            
-    #         nuevoEstado.f[2] = pieza_fila
-    #         nuevoEstado.c[2] = pieza_col
-    #         nuevoEstado.f[0] = pieza_fila + 1
-            
-    #     case "IZQDA":
-    #         fila_vacia = estado.f[2]
-    #         col_vacia = estado.c[2]
-    #         pieza_fila = estado.f[0]
-    #         pieza_col = estado.c[0]
-            
-    #         nuevoEstado.matriz[fila_vacia, col_vacia] = nuevoEstado.matriz[pieza_fila, pieza_col]
-    #         nuevoEstado.matriz[pieza_fila, pieza_col] = 0
-            
-    #         nuevoEstado.f[2] = pieza_fila
-    #         nuevoEstado.c[2] = pieza_col
-    #         nuevoEstado.c[0] = pieza_col - 1
-            
-    #     case "DRCHA":
-    #         fila_vacia = estado.f[2]
-    #         col
+            nuevoEstado.matriz[estado.f[1]-1, estado.c[1]-1] = 1
+            nuevoEstado.matriz[estado.f[1], estado.c[1]-2] = 1
+            nuevoEstado.matriz[estado.f[1]+1, estado.c[1]-1] = 1
+            nuevoEstado.c[1] = nuevoEstado.c[1]-1  # Actualizar la posición de la pieza A
+        case "DRCHA_A": 
+            # Mover la pieza A hacia la derecha
+            nuevoEstado.matriz[estado.f[1], estado.c[1]-1] = 0  # Actualizar la matriz
+            nuevoEstado.matriz[estado.f[1]-1, estado.c[1]] = 0
+            nuevoEstado.matriz[estado.f[1]+1, estado.c[1]] = 0
+
+            nuevoEstado.matriz[estado.f[1]-1, estado.c[1]+1] = 1
+            nuevoEstado.matriz[estado.f[1], estado.c[1]+2] = 1
+            nuevoEstado.matriz[estado.f[1]+1, estado.c[1]+1] = 1
+            nuevoEstado.c[1] = nuevoEstado.c[1]+1  # Actualizar la posición de la pieza A
+        
+        case "ARRIBA_B":
+            nuevoEstado.matriz[estado.f[2], estado.c[2]] = 0  # Actualizar la matriz
+            nuevoEstado.matriz[estado.f[2], estado.c[2]-1] = 0
+            nuevoEstado.matriz[estado.f[2], estado.c[2]+1] = 0
+
+            nuevoEstado.matriz[estado.f[2]-2, estado.c[2]] = 1
+            nuevoEstado.matriz[estado.f[2]-1, estado.c[2]-1] = 1
+            nuevoEstado.matriz[estado.f[2]-1, estado.c[2]+1] = 1
+            nuevoEstado.f[2] = nuevoEstado.f[2]-1  # Actualizar la posición de la pieza B
+        case "ABAJO_B":
+            nuevoEstado.matriz[estado.f[2], estado.c[2]-1] = 0  # Actualizar la matriz
+            nuevoEstado.matriz[estado.f[2], estado.c[2]+1] = 0
+            nuevoEstado.matriz[estado.f[2]-1, estado.c[2]] = 0
+
+            nuevoEstado.matriz[estado.f[2]+1, estado.c[2]] = 1
+            nuevoEstado.matriz[estado.f[2]+1, estado.c[2]+1] = 1
+            nuevoEstado.matriz[estado.f[2]+1, estado.c[2]-1] = 1
+            nuevoEstado.f[2] = nuevoEstado.f[2]+1  # Actualizar la posición de la pieza B
+        case "IZQDA_B":
+            nuevoEstado.matriz[estado.f[2]-1, estado.c[2]] = 0  # Actualizar la matriz
+            nuevoEstado.matriz[estado.f[2], estado.c[2]+1] = 0
+
+            nuevoEstado.matriz[estado.f[2]-1, estado.c[2]-1] = 1
+            nuevoEstado.matriz[estado.f[2], estado.c[2]-2] = 1
+            nuevoEstado.c[2] = nuevoEstado.c[2]-1  # Actualizar la posición de la pieza B
+        case "DRCHA_B":
+            nuevoEstado.matriz[estado.f[2], estado.c[2]] = 0  # Actualizar la matriz
+            nuevoEstado.matriz[estado.f[2], estado.c[2]] = 0
+            nuevoEstado.matriz[estado.f[2], estado.c[2]] = 0
+
+            nuevoEstado.matriz[estado.f[2], estado.c[2]] = 1
+            nuevoEstado.matriz[estado.f[2], estado.c[2]] = 1
+            nuevoEstado.matriz[estado.f[2], estado.c[2]] = 1
+            nuevoEstado.c[2] = nuevoEstado.c[2]+1  # Actualizar la posición de la pieza B
+        case "ARRIBA_C":
+            nuevoEstado.matriz[estado.f[3]+1, estado.c[3]] = 0  # Actualizar la matriz
+
+            nuevoEstado.matriz[estado.f[3]-2, estado.c[3]] = 1
+            nuevoEstado.f[3] = nuevoEstado.f[3]-1  # Actualizar la posición de la pieza C
+        case "ABAJO_C":
+            nuevoEstado.matriz[estado.f[3]-1, estado.c[3]] = 0  # Actualizar la matriz
+
+            nuevoEstado.matriz[estado.f[3]+2, estado.c[3]] = 1
+            nuevoEstado.f[3] = nuevoEstado.f[3]+1  # Actualizar la posición de la pieza C
+        case "IZQDA_C":
+            nuevoEstado.matriz[estado.f[3], estado.c[3]] = 0  # Actualizar la matriz
+            nuevoEstado.matriz[estado.f[3]-1, estado.c[3]] = 0
+            nuevoEstado.matriz[estado.f[3]+1, estado.c[3]] = 0
+
+            nuevoEstado.matriz[estado.f[3], estado.c[3]-1] = 1
+            nuevoEstado.matriz[estado.f[3]-1, estado.c[3]-1] =  1
+            nuevoEstado.matriz[estado.f[3]+1, estado.c[3]-1] = 1
+
+            nuevoEstado.c[3] = nuevoEstado.c[3]-1  # Actualizar la posición de la pieza C
+        case "DRCHA_C":
+            nuevoEstado.matriz[estado.f[3], estado.c[3]] = 0  # Actualizar la matriz
+            nuevoEstado.matriz[estado.f[3]-1, estado.c[3]] = 0
+            nuevoEstado.matriz[estado.f[3]+1, estado.c[3]] = 0
+
+            nuevoEstado.matriz[estado.f[3], estado.c[3]+1] = 1
+            nuevoEstado.matriz[estado.f[3]-1, estado.c[3]+1] = 1
+            nuevoEstado.matriz[estado.f[3]+1, estado.c[3]+1] = 1  
+
+            nuevoEstado.c[3] = nuevoEstado.c[3]+1  # Actualizar la posición de la pieza C
+
+    return nuevoEstado
