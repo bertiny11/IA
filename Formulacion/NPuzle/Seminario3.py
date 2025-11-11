@@ -19,9 +19,9 @@ class tEstado:
         
 
 
-operadores = {8: "ARRIBA_A", 2: "ABAJO_A", 4: "IZQDA_A", 6: "DRCHA_A",8: "ARRIBA_B", 2: "ABAJO_B", 4: "IZQDA_B", 6: "DRCHA_B",8: "ARRIBA_C", 2: "ABAJO_C", 4: "IZQDA_C", 6: "DRCHA_C"}
-# operadores2 = {8: "ARRIBA", 2: "ABAJO", 4: "IZQDA", 6: "DRCHA"}
-# operadores3 = {8: "ARRIBA", 2: "ABAJO", 4: "IZQDA", 6: "DRCHA"}
+operadores = {8: "ARRIBA_A", 2: "ABAJO_A", 4: "IZQDA_A", 6: "DRCHA_A",8: "ARRIBA_B", 2: 
+                "ABAJO_B", 4: "IZQDA_B", 6: "DRCHA_B",8: "ARRIBA_C", 2: "ABAJO_C", 4: "IZQDA_C", 6: "DRCHA_C"}
+
 
 #Formalizar
 
@@ -33,7 +33,42 @@ def esValido(estado: tEstado, op: str) -> bool:
     
     match operadores[op]:
         case "ARRIBA_A":
-            pass
+            if(estado.matriz[estado.f]-2, [estado.c] > 0):
+                return True
+        case "Abajo_A":
+            if(estado.matriz[estado.f]+2, [estado.c] < estado.n):
+                return True
+        case "IZQDA_A":
+            if(estado.matriz[estado.f], [estado.c]-2 > 0):
+                return True
+        case "DRCHA_A":
+            if(estado.matriz[estado.f], [estado.c]+2 < estado.N):
+                return True
+        case "ARRIBA_B":
+            if(estado.matriz[estado.f]-2, [estado.c] > 0):
+                return True
+        case "Abajo_B":
+            if(estado.matriz[estado.f]-1, [estado.c] < estado.N):
+                return True
+        case "IZQDA_B":
+            if(estado.matriz[estado.f], [estado.c]-2 > 0):
+                return True
+        case "DRCHA_B":
+            if(estado.matriz[estado.f], [estado.c]+2 < estado.N):
+                return True
+        case "ARRIBA_C":
+            if(estado.matriz[estado.f]-2, [estado.c] > 0):
+                return True
+        case "Abajo_C":
+            if(estado.matriz[estado.f]+2, [estado.c] < estado.N):
+                return True
+        case "IZQDA_C":
+            if(estado.matriz[estado.f], [estado.c]-1 > 0):
+                return True
+        case "DRCHA_A":
+            if(estado.matriz[estado.f], [estado.c] > estado.N):
+                return True
+
     return False
 
 def aplicaOperador(op: str, estado: tEstado) -> tEstado:
@@ -147,3 +182,31 @@ def aplicaOperador(op: str, estado: tEstado) -> tEstado:
             nuevoEstado.c[3] = nuevoEstado.c[3]+1  # Actualizar la posición de la pieza C
 
     return nuevoEstado
+
+def testObjetivo(estado: tEstado) -> bool:
+    objetivo = np.array()
+    return np.array_equal(estado.matriz, objetivo)
+
+def estadoOnjetivo():
+    return tEstado(np.array()) [[-1,0,0,0,0,0],
+                                [-1,0,0,0,0,0]
+                                [0,0,0,0,0,0]
+                                [0,1,0,-1,0,1]
+                                [1,1,1,1,0,1]
+                                [0,1,1,1,1,1]]
+    
+#Usamos la distancia de manhattan, ya que sabemos los centros de las figuras
+def Heuristica1(estado: tEstado):#Debemos primero comprobar la distancia que hay desde el centro de las figuras hasta el centro de las figuras de su estado final
+    obj = estadoOnjetivo()
+    filas = np.abs(np.array(estado.f)[1:])
+    columnas = np.abs(np.array(estado.c[1:]))
+def Heuristica2():
+    pass
+
+#f(n) = h(n)
+#hay que ordenar nuestra lista de abierto 
+def Voraz():
+    pass
+
+def Estrella():
+    pass
