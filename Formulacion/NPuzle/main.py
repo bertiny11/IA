@@ -1,10 +1,10 @@
 from NPuzle_Alum import estadoInicial, aplicaOperador, testObjetivo, esValido, operadores
-from Busqueda_Alum import DLS
+from Busqueda_Alum import DFS
 
 estado = estadoInicial()
 from time import time
 inicio = time()
-DLS(10)
+DFS()
 fin = time()
 print(fin-inicio)
 # # Código para probar Npuzle - No requiere de la función de búsqueda

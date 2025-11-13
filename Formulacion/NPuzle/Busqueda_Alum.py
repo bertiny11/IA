@@ -31,6 +31,7 @@ def dispCamino(nodo: Nodo) -> None:
 
 
 def dispSolucion(nodo: Nodo):
+    print("holadispo")
     dispCamino(nodo)
     print("Profundidad: ", nodo.profundidad)
     print("Coste: ", nodo.costeCamino)
@@ -54,8 +55,7 @@ def BFS() -> None:
     raiz = NodoInicial()
     abiertos = []
     sucesores = []
-    cerrados = []
-    abiertos.append(raiz)
+    cerrados = set()
 
     # Completar el resto del código
     
@@ -65,44 +65,49 @@ def BFS() -> None:
         if testObjetivo(raiz.estado):
             objetivo = True
             dispSolucion(raiz)
-        else:
+            break
+        if raiz.estado not in cerrados:
             sucesores = expandir(raiz)
-            for nodo in sucesores:
-                if all(nodo.estado.t != c.estado.t for c in cerrados + abiertos):
-                    abiertos.append(nodo)  
+            cerrados.add(raiz.estado)
+            abiertos.extend(sucesores) #Si no es la solucion, expando y añado los nodos a la lista de abierto para mirarlo en la proxima interseccion
     # Completar
     if not objetivo:
         print("No se ha encontrado solución")
+    if objetivo:
+        dispSolucion(raiz)
+    return objetivo
 
 # # Implementar la búsqueda en profundidad
 def DFS() -> None:
+    objetivo = False
     abiertos = []
-    cerrados = []
+    cerrados = set()
     sucesores = []
-    actual = None
-
     # Inicializamos la pila con el estado inicial
     abiertos.append(NodoInicial())
-    objetivo = False
 
     while abiertos and not objetivo:
         # Extraer el primer elemento (LIFO)
         actual = abiertos.pop(0)
-        cerrados.append(actual)
-
         # Comprobamos si el estado actual es objetivo
-        objetivo = testObjetivo(actual.estado)
-
-        if not objetivo:
+        if testObjetivo(actual.estado):
+            print("hola")
+            objetivo = True
+            dispSolucion(actual)
+            break
+        if actual.estado not in cerrados:
+            cerrados.add(actual.estado)
             # Expandir sucesores del estado actual
             sucesores = expandir(actual)
 
+            for s in reversed(sucesores):
             # Insertar sucesores al principio de la lista (pila)
             # pero evitando duplicados en abiertos y cerrados
-            nuevos = [s for s in sucesores if s not in abiertos and s not in cerrados]
-            abiertos = nuevos + abiertos  # prioridad a los nuevos
-
+            #prioridad a los nuevos
+                abiertos.insert(0, s)
     return objetivo
+
+
 def buscarRepetidos2(actual, cerrados):
     for nodo in cerrados:
         if np.array_equal(nodo.estado.t, actual.estado.t):
