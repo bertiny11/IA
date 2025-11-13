@@ -1,10 +1,8 @@
-from NPuzle_Alum import estadoInicial, aplicaOperador, testObjetivo, esValido, operadores
-from Busqueda_Alum import DFS
+from Busqueda_Alum import Voraz
 
-estado = estadoInicial()
 from time import time
 inicio = time()
-DFS()
+Voraz()
 fin = time()
 print(fin-inicio)
 # # Código para probar Npuzle - No requiere de la función de búsqueda

@@ -1,7 +1,7 @@
 from __future__ import annotations
 from dataclasses import dataclass
 import numpy as np
-from NPuzle_Alum import tEstado, esValido, aplicaOperador, estadoInicial, testObjetivo, operadores
+from NPuzle_Alum import tEstado, esValido, aplicaOperador, estadoInicial, testObjetivo, operadores, heuristica
 
 @dataclass
 class Nodo:
@@ -10,9 +10,10 @@ class Nodo:
     costeCamino: int 
     profundidad: int
     padre: Nodo 
+    heuristica: int
 
 def NodoInicial() -> Nodo:
-    return Nodo(estadoInicial(), "", 0, 0, None)   
+    return Nodo(estadoInicial(), "", 0, 0, None, heuristica(estadoInicial()))   
 
 def dispCamino(nodo: Nodo) -> None:
     lista = []
@@ -43,8 +44,9 @@ def expandir(nodo: Nodo) -> list:
     for op in operadores:
         if esValido(op, nodo.estado):
             nuevoEstado = aplicaOperador(op, nodo.estado)
-            nuevoNodo = Nodo(nuevoEstado, op, nodo.costeCamino + 1, nodo.profundidad + 1, nodo)
+            nuevoNodo = Nodo(nuevoEstado, op, nodo.costeCamino + 1, nodo.profundidad + 1, nodo, heuristica(nodo.estado))
             sucesores.append(nuevoNodo)
+
     #....
 
     return sucesores
@@ -75,7 +77,6 @@ def BFS() -> None:
         print("No se ha encontrado solución")
     if objetivo:
         dispSolucion(raiz)
-    return objetivo
 
 # # Implementar la búsqueda en profundidad
 def DFS() -> None:
@@ -105,7 +106,6 @@ def DFS() -> None:
             # pero evitando duplicados en abiertos y cerrados
             #prioridad a los nuevos
                 abiertos.insert(0, s)
-    return objetivo
 
 
 def buscarRepetidos2(actual, cerrados):
@@ -120,7 +120,7 @@ def buscarRepetidos1(actual, abiertos):
 #     1. Búsqueda en Profundidad Limitada.
 def DLS(limite: int) -> None:
     abiertos = []
-    cerrados = []
+    cerrados = set()
     sucesores = []
     profundidad_actual = 0
 
@@ -130,7 +130,7 @@ def DLS(limite: int) -> None:
     while abiertos and not objetivo:
 
         actual = abiertos.pop(0)
-        cerrados.append(actual)
+        cerrados.add(actual)
 
         
         objetivo = testObjetivo(actual.estado)
@@ -145,8 +145,10 @@ def DLS(limite: int) -> None:
                 if(buscarRepetidos1(actual, abiertos)):
                     abiertos = sucesores + abiertos
                     profundidad_actual = 1;
-            
-    return objetivo
+    if not objetivo:
+        print("No se ha encontrado solución")
+    if objetivo:
+        dispSolucion(actual)        
 
 #     2. Búsqueda en Profundidad Limitada Iterativa.
     
@@ -158,3 +160,42 @@ def DLSI(limite_inicial: int):
             print("Objetivo encontrado")
             return True
         limite += 1  # Incrementar límite y volver a intentar
+
+
+def Voraz() -> None:
+    abiertos = []
+    cerrados = set()
+    Sucesores = []  
+    objetivo = False
+
+    abiertos.append(NodoInicial())
+
+    while len(abiertos)> 0 and not objetivo :
+        actual = abiertos[0]
+        abiertos.pop()
+        print("1111")
+
+        objetivo = testObjetivo(actual.estado)
+
+        if not objetivo : # si no es verdadero  
+            repe = actual.estado.hash() not in cerrados
+            if not repe:
+                Sucesores = expandir(actual)
+                #Ahora debemos de meter a los nodos sucesores de manera creciente en función de su heurística
+                abiertos = abiertos + Sucesores
+                abiertos.sort(key=lambda e: e.heuristica)
+                cerrados.add(actual.estado.hash())
+            #hay una opcion mas comoda
+            # sorted(abiertos)
+# def __it__(self, otro):
+#             return self.heu < otro.heu, con A* self.heu + otro.costecamino < otro.heu < otro.costecamino
+#   Podemos usar diccionario 
+            cerrados.append(actual)
+    if not objetivo:
+        print("No se ha encontrado solución")
+    if objetivo:
+        dispSolucion(actual)
+
+
+
+
