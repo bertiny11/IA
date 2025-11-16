@@ -12,6 +12,12 @@ class Nodo:
     padre: Nodo 
     heuristica: int
 
+    # def __lt__(self, other):
+        # return self.heuristica < other.heuristica
+
+    def __lt__(self, other):
+        return (self.heuristica + self.costeCamino) < (other.heuristica + other.costeCamino)
+
 def NodoInicial() -> Nodo:
     return Nodo(estadoInicial(), "", 0, 0, None, heuristica(estadoInicial()))   
 
@@ -31,8 +37,8 @@ def dispCamino(nodo: Nodo) -> None:
             print()
 
 
+
 def dispSolucion(nodo: Nodo):
-    print("holadispo")
     dispCamino(nodo)
     print("Profundidad: ", nodo.profundidad)
     print("Coste: ", nodo.costeCamino)
@@ -44,7 +50,7 @@ def expandir(nodo: Nodo) -> list:
     for op in operadores:
         if esValido(op, nodo.estado):
             nuevoEstado = aplicaOperador(op, nodo.estado)
-            nuevoNodo = Nodo(nuevoEstado, op, nodo.costeCamino + 1, nodo.profundidad + 1, nodo, heuristica(nodo.estado))
+            nuevoNodo = Nodo(nuevoEstado, op, nodo.costeCamino + 1, nodo.profundidad + 1, nodo, heuristica(nuevoEstado))
             sucesores.append(nuevoNodo)
 
     #....
@@ -171,26 +177,23 @@ def Voraz() -> None:
     abiertos.append(NodoInicial())
 
     while len(abiertos)> 0 and not objetivo :
-        actual = abiertos[0]
-        abiertos.pop()
-        print("1111")
+        actual = abiertos.pop(0)
 
         objetivo = testObjetivo(actual.estado)
 
         if not objetivo : # si no es verdadero  
-            repe = actual.estado.hash() not in cerrados
+            repe = actual.estado.hash() in cerrados
             if not repe:
                 Sucesores = expandir(actual)
                 #Ahora debemos de meter a los nodos sucesores de manera creciente en función de su heurística
                 abiertos = abiertos + Sucesores
-                abiertos.sort(key=lambda e: e.heuristica)
+                abiertos.sort()
                 cerrados.add(actual.estado.hash())
             #hay una opcion mas comoda
             # sorted(abiertos)
 # def __it__(self, otro):
 #             return self.heu < otro.heu, con A* self.heu + otro.costecamino < otro.heu < otro.costecamino
 #   Podemos usar diccionario 
-            cerrados.append(actual)
     if not objetivo:
         print("No se ha encontrado solución")
     if objetivo:
@@ -198,4 +201,28 @@ def Voraz() -> None:
 
 
 
+def Estrella() -> None:
+    abiertos = []
+    cerrados = set()
+    Sucesores = []
+    objetivo = False
 
+    abiertos.append(NodoInicial())
+    while len(abiertos) > 0 and not objetivo:
+        actual = abiertos.pop(0)
+        objetivo = testObjetivo(actual.estado)
+
+        if not objetivo : # si no es verdadero  
+            repe = actual.estado.hash() in cerrados
+
+            if not repe:
+                Sucesores = expandir(actual)
+                #Ahora debemos de meter a los nodos sucesores de manera creciente en función de su heurística
+                abiertos = abiertos + Sucesores
+                abiertos.sort()
+                cerrados.add(actual.estado.hash())
+
+    if not objetivo:
+        print("No se ha encontrado solución")
+    if objetivo:
+        dispSolucion(actual)
