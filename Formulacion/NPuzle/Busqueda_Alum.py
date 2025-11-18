@@ -173,36 +173,48 @@ def Voraz() -> None:
     cerrados = set()
     Sucesores = []  
     objetivo = False
+    hash_abiertos = set()
 
     abiertos.append(NodoInicial())
+    hash_abiertos.add(NodoInicial().estado.hash())
+
 
     while len(abiertos)> 0 and not objetivo :
         actual = abiertos.pop(0)
+        hash_abiertos.discard(actual.estado.hash())
 
         objetivo = testObjetivo(actual.estado)
 
         if not objetivo : # si no es verdadero  
             repe = actual.estado.hash() in cerrados
-            if not repe:
+            if not repe:        
                 Sucesores = expandir(actual)
                 #Ahora debemos de meter a los nodos sucesores de manera creciente en función de su heurística
-                abiertos = abiertos + Sucesores
+                #Comprobamos que los sucesores no se repite en la lista de abiertos
+                for s in Sucesores:
+                    h = s.estado.hash()
+                    if h not in cerrados and h not in hash_abiertos:
+                        abiertos.append(s)
+                        hash_abiertos.add(h)
+
                 abiertos.sort()
                 cerrados.add(actual.estado.hash())
-            #hay una opcion mas comoda
-            # sorted(abiertos)
-# def __it__(self, otro):
-#             return self.heu < otro.heu, con A* self.heu + otro.costecamino < otro.heu < otro.costecamino
-#   Podemos usar diccionario 
+                print(actual.heuristica)
+            
     if not objetivo:
         print("No se ha encontrado solución")
     if objetivo:
         dispSolucion(actual)
 
+#hay una opcion mas comoda
+            # sorted(abiertos)
+# def __it__(self, otro):
+#             return self.heu < otro.heu, con A* self.heu + otro.costecamino < otro.heu < otro.costecamino
+#   Podemos usar diccionario 
 
 
 def Estrella() -> None:
-    abiertos = []
+    abiertos = {}
     cerrados = set()
     Sucesores = []
     objetivo = False
@@ -218,7 +230,7 @@ def Estrella() -> None:
             if not repe:
                 Sucesores = expandir(actual)
                 #Ahora debemos de meter a los nodos sucesores de manera creciente en función de su heurística
-                abiertos = abiertos + Sucesores
+                # abiertos = abiertos + Sucesores
                 abiertos.sort()
                 cerrados.add(actual.estado.hash())
 
