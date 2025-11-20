@@ -1,8 +1,8 @@
-from Busqueda_Alum import Voraz
+from Busqueda_Alum import Estrella
 
 from time import time
 inicio = time()
-Voraz()
+Estrella()
 fin = time()
 print(fin-inicio)
 # # Código para probar Npuzle - No requiere de la función de búsqueda

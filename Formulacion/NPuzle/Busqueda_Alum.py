@@ -1,7 +1,7 @@
 from __future__ import annotations
 from dataclasses import dataclass
 import numpy as np
-from NPuzle_Alum import tEstado, esValido, aplicaOperador, estadoInicial, testObjetivo, operadores, heuristica
+from NPuzle_Alum import tEstado, esValido, aplicaOperador, estadoInicial, testObjetivo, operadores, heuristica, Manhattan
 
 @dataclass
 class Nodo:
@@ -56,6 +56,7 @@ def expandir(nodo: Nodo) -> list:
     #....
 
     return sucesores
+
 
 def BFS() -> None:
     objetivo = False
@@ -145,10 +146,7 @@ def DLS(limite: int) -> None:
 
             sucesores = expandir(actual)
             
-            if(buscarRepetidos2(actual, cerrados)):
-                #si el nuevo sucesor no es el mismo que hemos tenido en cerrado lo añadimos
-                #una vez comprobado que no está en cerados debemos de comprobar si es igual en abiertos 
-                if(buscarRepetidos1(actual, abiertos)):
+            if(buscarRepetidos1(actual, abiertos)):
                     abiertos = sucesores + abiertos
                     profundidad_actual = 1;
     if not objetivo:
@@ -199,7 +197,6 @@ def Voraz() -> None:
 
                 abiertos.sort()
                 cerrados.add(actual.estado.hash())
-                print(actual.heuristica)
             
     if not objetivo:
         print("No se ha encontrado solución")
@@ -214,8 +211,8 @@ def Voraz() -> None:
 
 
 def Estrella() -> None:
-    abiertos = {}
-    cerrados = set()
+    abiertos = []
+    cerrados = {}
     Sucesores = []
     objetivo = False
 
@@ -225,14 +222,13 @@ def Estrella() -> None:
         objetivo = testObjetivo(actual.estado)
 
         if not objetivo : # si no es verdadero  
-            repe = actual.estado.hash() in cerrados
-
-            if not repe:
-                Sucesores = expandir(actual)
-                #Ahora debemos de meter a los nodos sucesores de manera creciente en función de su heurística
-                # abiertos = abiertos + Sucesores
-                abiertos.sort()
-                cerrados.add(actual.estado.hash())
+            if(actual.estado.hash() in cerrados and actual.heuristica + actual.costeCamino < cerrados[actual.estado.hash()] or actual.estado.hash() not in cerrados):
+                    cerrados[actual.estado.hash()] = actual.heuristica + actual.costeCamino
+                    Sucesores = expandir(actual)
+                    #Ahora debemos de meter a los nodos sucesores de manera creciente en función de su heurística
+                    abiertos = abiertos + Sucesores
+                    abiertos.sort()
+                    
 
     if not objetivo:
         print("No se ha encontrado solución")

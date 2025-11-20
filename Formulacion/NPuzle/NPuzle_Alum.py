@@ -110,3 +110,22 @@ def heuristica(actual: tEstado):
     objetivo = estadoObjetivo().t
     h = np.sum((actual.t != objetivo) & (actual.t != 0))
     return int(h)
+
+def Manhattan(actual: tEstado):
+#     #para hacer manhattan necesitamos saber la posicion objetivo, podemos hacer i + j actual - i + j objetivo 
+#     #np.where(matriz == numero que quiera)
+    objetivo = estadoObjetivo()
+#     # for i in range (actual.N):
+#     #     for j in range(actual.N):
+#     #         for k in range(actual.N):
+#     #             for l in range(actual.N):
+#     #                 if(actual.t[i, j] == objetivo[k, l]):
+    for i in range(1, 10): 
+        posi, posj = np.where(actual.t == i)
+        posi = posi[0]
+        posj = posj[0]
+        posiO, posjO = np.where(objetivo.t == i)
+        posiO = posiO[0]
+        posjO = posjO[0]
+        heur = abs((posi + posj) - (posiO + posjO))
+    return heur
