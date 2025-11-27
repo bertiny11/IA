@@ -1,0 +1,48 @@
+from tictactoeAlum import *
+
+def PSEUDOminimax(nodo: Nodo) -> Nodo:
+    # El agente inteligente (que se corresponde con MAX) hace el movimiento... ¿más beneficioso para MAX?
+    mejorJugada = -1
+    puntos = -2
+    for jugada in jugadas:
+        if esValida(nodo, jugada):
+            intento = aplicaJugada(nodo, jugada, 1)
+            util = utilidad(intento)
+            if util > puntos:
+                puntos = util
+                mejorJugada = jugada
+    nodo = aplicaJugada(nodo, mejorJugada, 1)
+    return nodo
+
+
+def jugadaAdversario(nodo: Nodo) -> Nodo:
+    # El usuario (que se corresponde con MIN) hace el movimiento si es válido.
+    valida = False
+    jugada = None
+    while not valida:
+        fila = int(input("Fila: "))
+        col = int(input("Col: "))
+        jugada = Jugada(fila, col)
+        valida = esValida(nodo, jugada)
+        if not valida:
+            print("\n Intenta otra posicion del tablero \n")
+    nodo = aplicaJugada(nodo, jugada, -1)
+    return nodo
+
+
+def minimax(nodo: Nodo) -> Nodo:
+    # Mientras que no termine de implementar esta función, 
+    #   puede mantener esta excepción. Quítela cuando implemente la función
+    raise NotImplementedError
+
+
+def valorMin(nodo) -> int:
+    # Mientras que no termine de implementar esta función, 
+    #   puede mantener esta excepción. Quítela cuando implemente la función
+    raise NotImplementedError
+
+
+def valorMax(nodo) -> int:
+    # Mientras que no termine de implementar esta función, 
+    #   puede mantener esta excepción. Quítela cuando implemente la función
+    raise NotImplementedError
