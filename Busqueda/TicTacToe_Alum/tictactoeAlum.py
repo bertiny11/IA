@@ -12,7 +12,7 @@ class Nodo:
     def __init__(self, tablero: np.ndarray):
         self.tablero = tablero
         self.N = self.tablero.shape[0]
-        self.vacias = len(np.where(tablero == 0))
+        self.vacias = np.count_nonzero(tablero == 0)
 
     def __str__(self) -> str:
         # Función para representar el nodo en forma de cadena (se llama a esta función al hacer print). 
@@ -132,8 +132,6 @@ def esValida(actual: Nodo, jugada: Jugada) -> bool:
 
     return valido 
 
-    raise NotImplementedError
-
 
 def terminal(actual: Nodo) -> bool:
     """Comprueba si el juego se ha acabado, ya sea porque alguno de los jugadores ha ganado o bien porque no 
@@ -153,21 +151,20 @@ def terminal(actual: Nodo) -> bool:
     if(actual.vacias == 0):
         return True
     for i in range(actual.N):
-        if abs(sum(actual.tablero[i, :])== actual.N):
+        if (abs(sum(actual.tablero[i, :]))== actual.N):
             return True
-        if abs(sum(actual.tablero[:, i]) == actual.N):
+        if (abs(sum(actual.tablero[:, i])) == actual.N):
             return True
     suma_diag_principal = sum(actual.tablero[i][i] for i in range(actual.N))
-    if abs(suma_diag_principal) == actual.N:
+    if (abs(suma_diag_principal)) == actual.N:
         return True
 
     # Diagonal Secundaria (0,2), (1,1), (2,0)...
     suma_diag_secundaria = sum(actual.tablero[i][actual.N-1-i] for i in range(actual.N))
-    if abs(suma_diag_secundaria) == actual.N:
+    if (abs(suma_diag_secundaria)) == actual.N:
         return True
 
     return terminal 
-    raise NotImplementedError
 
 
 def utilidad(nodo: Nodo) -> int:
@@ -184,4 +181,24 @@ def utilidad(nodo: Nodo) -> int:
     Returns:
         int: Valor de utilidad
     """
-    raise NotImplementedError
+    valor = 0
+    for i in range(nodo.N):
+        # Filas: sumamos la fila i completa
+        suma_fila = sum(nodo.tablero[i, :])
+        if suma_fila == nodo.N: return 100    # Gana MAX (ej: 1+1+1 = 3)
+        if suma_fila == -nodo.N: return -100  # Gana MIN (ej: -1-1-1 = -3)
+
+        # Columnas: sumamos la columna i completa
+        suma_col = sum(nodo.tablero[:, i])
+        if suma_col == nodo.N: return 100
+        if suma_col == -nodo.N: return -100
+
+    suma_diag_principal = sum(nodo.tablero[i][i] for i in range(nodo.N))        
+    if suma_diag_principal == nodo.N: return 100     # Gana MAX
+    if suma_diag_principal == -nodo.N: return -100   # Gana MIN
+
+    suma_diag_secundaria = sum(nodo.tablero[i][nodo.N-1-i] for i in range(nodo.N))
+    if suma_diag_secundaria == nodo.N: return 100    # Gana MAX
+    if suma_diag_secundaria == -nodo.N: return -100  # Gana MIN
+    
+    return valor
