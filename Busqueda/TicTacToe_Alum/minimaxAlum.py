@@ -33,7 +33,18 @@ def jugadaAdversario(nodo: Nodo) -> Nodo:
 def minimax(nodo: Nodo) -> Nodo:
     # Mientras que no termine de implementar esta función, 
     #   puede mantener esta excepción. Quítela cuando implemente la función
-    raise NotImplementedError
+    jugador = 1
+    mejorJugada = jugadas[0]
+    max = -10000
+    for jugada in jugadas:
+        if esValida(nodo, jugada):
+            intento = aplicaJugada(nodo, jugada, jugador)
+            max_actual = valorMin(intento)
+            if max_actual > max:
+                max = max_actual
+                mejorJugada = jugada
+    nodo = aplicaJugada(nodo, mejorJugada, jugador)
+    return nodo
 
 
 def valorMin(nodo) -> int:
