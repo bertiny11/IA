@@ -56,7 +56,7 @@ class TicTacToeGUI:
         if self.jugador_actual == 1:
             self.ActualizarGUI_Msg("IA: Calculando movimiento...")
             self.ventana.update() 
-            self.juego = PSEUDOminimax(self.juego) 
+            self.juego = minimax(self.juego) 
             
         elif self.jugador_actual == -1 and jugada:
             self.juego = aplicaJugada(self.juego, jugada, -1)

@@ -9,7 +9,7 @@ if jugador != 1:
 juego = nodoInicial()
 while juego.vacias > 0 and not ganador:
     if jugador == 1:
-        juego = PSEUDOminimax(juego)
+        juego = minimax(juego)
     else:
         juego = jugadaAdversario(juego)
     print(juego)

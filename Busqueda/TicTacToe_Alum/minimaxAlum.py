@@ -50,10 +50,30 @@ def minimax(nodo: Nodo) -> Nodo:
 def valorMin(nodo) -> int:
     # Mientras que no termine de implementar esta función, 
     #   puede mantener esta excepción. Quítela cuando implemente la función
-    raise NotImplementedError
+    valor_min = 100000
+    jugador = -1
+    if terminal(nodo):
+        valor_min = utilidad(nodo)
+    else:
+        valor_min = 10000
+        for jugada in jugadas:
+            if esValida(nodo, jugada):
+                valor_min = min(valor_min, valorMax(aplicaJugada(nodo, jugada, jugador)))
+
+    return valor_min
 
 
 def valorMax(nodo) -> int:
     # Mientras que no termine de implementar esta función, 
     #   puede mantener esta excepción. Quítela cuando implemente la función
-    raise NotImplementedError
+    valor_Max = -100000
+    jugador = 1
+    if terminal(nodo):
+        valor_Max = utilidad(nodo)
+    else:
+        valor_Max = -100000
+        for jugada in jugadas:
+            if esValida(nodo, jugada):
+                valor_Max = max(valor_Max, valorMin(aplicaJugada(nodo, jugada, jugador)))
+                
+    return valor_Max
