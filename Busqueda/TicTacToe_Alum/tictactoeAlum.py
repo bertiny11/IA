@@ -202,3 +202,52 @@ def utilidad(nodo: Nodo) -> int:
     if suma_diag_secundaria == -nodo.N: return -100  # Gana MIN
     
     return valor
+
+def heuristica(nodo) -> int:
+
+    #Nº de columnas, filas y diagonales con X y sin O
+    for i in range(nodo.N):
+        # Filas: sumamos la fila i completa
+        if nodo.tablero[i, :] == 0:
+            suma_fila +=1
+        suma_fila = sum(nodo.tablero[i, :])
+
+        # Columnas: sumamos la columna i completa
+        if nodo.tablero[:, 1] == 0:
+            suma_col += 1
+        suma_col = sum(nodo.tablero[:, i])
+    for i in range(nodo.N):
+        if nodo.tablero[i][i] == 0:
+            suma_diag_principal += 1
+        suma_diag_principal = sum(nodo.tablero[i][i])        
+        
+    for i in range(nodo.N):
+        if nodo.tablero[i][nodo.N-1-i] == 0:
+            suma_diag_secundaria += 1
+        suma_diag_secundaria = sum(nodo.tablero[i][nodo.N-1-i])
+
+    maximo = max(suma_fila, suma_col, suma_diag_principal, suma_diag_secundaria)
+
+    #Nº de columnas, filas y diagonales con O y sin X
+    for i in range(nodo.N):
+        # Filas: sumamos la fila i completa
+        if nodo.tablero[i, :] == 0:
+            suma_fila +=1
+        suma_fila = sum(nodo.tablero[i, :])
+
+        # Columnas: sumamos la columna i completa
+        if nodo.tablero[:, 1] == 0:
+            suma_col += 1
+        suma_col = sum(nodo.tablero[:, i])
+    for i in range(nodo.N):
+        if nodo.tablero[i][i] == 0:
+            suma_diag_principal += 1
+        suma_diag_principal = sum(nodo.tablero[i][i])        
+        
+    for i in range(nodo.N):
+        if nodo.tablero[i][nodo.N-1-i] == 0:
+            suma_diag_secundaria += 1
+        suma_diag_secundaria = sum(nodo.tablero[i][nodo.N-1-i])
+    minimo = max(suma_fila, suma_col, suma_diag_principal, suma_diag_secundaria)
+    
+    return maximo - minimo

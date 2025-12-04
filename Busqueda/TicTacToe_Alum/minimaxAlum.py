@@ -77,3 +77,5 @@ def valorMax(nodo) -> int:
                 valor_Max = max(valor_Max, valorMin(aplicaJugada(nodo, jugada, jugador)))
                 
     return valor_Max
+
+
