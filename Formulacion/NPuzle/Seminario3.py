@@ -48,7 +48,7 @@ def esValido(estado: tEstado, op: str) -> bool:
             if(estado.matriz[estado.f]-2, [estado.c] > 0):
                 return True
         case "Abajo_B":
-            if(estado.matriz[estado.f]-1, [estado.c] < estado.N):
+            if(estado.matriz[estado.f]+1, [estado.c] < estado.N):
                 return True
         case "IZQDA_B":
             if(estado.matriz[estado.f], [estado.c]-2 > 0):
@@ -66,7 +66,7 @@ def esValido(estado: tEstado, op: str) -> bool:
             if(estado.matriz[estado.f], [estado.c]-1 > 0):
                 return True
         case "DRCHA_A":
-            if(estado.matriz[estado.f], [estado.c] > estado.N):
+            if(estado.matriz[estado.f], [estado.c]+1 > estado.N):
                 return True
 
     return False
