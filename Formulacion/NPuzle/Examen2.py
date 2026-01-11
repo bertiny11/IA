@@ -83,6 +83,52 @@ def esValido(estado: tEstado, op: str) -> bool:
             if(estado.asientos[2][1] == ABATIDO): 
                 return True
     
+def aplicaOperador(estado: tEstado, op: str) -> tEstado:
+    # 1. Creamos la copia de seguridad para no romper el estado anterior
+    nuevo_estado = copy.deepcopy(estado)
+    
+    # 2. Modificamos directamente sobre nuevo_estado.asientos
+    match op:
+        # --- FILA 1: PILOTO (Posición [0][0]) ---
+        case "DESPLAZAR_PILOTO":
+            nuevo_estado.asientos[0][0] = DESPLAZADO
+            
+        case "NORMAL_PILOTO":
+            nuevo_estado.asientos[0][0] = NORMAL
+            
+        # --- FILA 1: COPILOTO (Posición [0][1]) ---
+        case "ABATIR_COPILOTO":
+            nuevo_estado.asientos[0][1] = ABATIDO
+            
+        case "DESPLAZAR_COPILOTO":
+            nuevo_estado.asientos[0][1] = DESPLAZADO
+            
+        case "NORMAL_COPILOTO":
+            nuevo_estado.asientos[0][1] = NORMAL
+
+        # --- FILA 2 ---
+        case "ABATIR_F2_DOBLE":
+            nuevo_estado.asientos[1][0] = ABATIDO
+        case "NORMAL_F2_DOBLE":
+            nuevo_estado.asientos[1][0] = NORMAL
+            
+        case "ABATIR_F2_DER":
+            nuevo_estado.asientos[1][1] = ABATIDO
+        case "NORMAL_F2_DER":
+            nuevo_estado.asientos[1][1] = NORMAL
+
+        # --- FILA 3 ---
+        case "ABATIR_F3_IZQ":
+            nuevo_estado.asientos[2][0] = ABATIDO
+        case "NORMAL_F3_IZQ":
+            nuevo_estado.asientos[2][0] = NORMAL
+            
+        case "ABATIR_F3_DER":
+            nuevo_estado.asientos[2][1] = ABATIDO
+        case "NORMAL_F3_DER":
+            nuevo_estado.asientos[2][1] = NORMAL
+
+    return nuevo_estado
 
 
 estado_inicial = tEstado([
