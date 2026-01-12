@@ -82,7 +82,8 @@ def esValido(estado: tEstado, op: str) -> bool:
         case "NORMAL_F3_DER":
             if(estado.asientos[2][1] == ABATIDO): 
                 return True
-    
+    return False
+
 def aplicaOperador(estado: tEstado, op: str) -> tEstado:
     # 1. Creamos la copia de seguridad para no romper el estado anterior
     nuevo_estado = copy.deepcopy(estado)
@@ -130,6 +131,55 @@ def aplicaOperador(estado: tEstado, op: str) -> tEstado:
 
     return nuevo_estado
 
+def testObjetivo(estado : tEstado):
+    if (estado.asientos[0][0] == NORMAL and
+    estado.asientos[0][1] == NORMAL and
+    estado.asientos[1][0] == ABATIDO and
+    estado.asientos[1][1] == ABATIDO and
+    estado.asientos[2][0] == NORMAL and
+    estado.asientos[2][1] == NORMAL ):
+        return True
+    return False
+    
+def heuristica(estado: tEstado) -> int:
+    coste = 0
+    grid = estado.asientos
+    
+    # --- FILA 1: META -> NORMAL ---
+    # Coste de volver a NORMAL:
+    # Desde DESPLAZADO = 1
+    # Desde ABATIDO = 2
+    
+    # Piloto [0][0]
+    if grid[0][0] == DESPLAZADO: coste += 1
+    elif grid[0][0] == ABATIDO:    coste += 2
+        
+    # Copiloto [0][1]
+    if grid[0][1] == DESPLAZADO: coste += 1
+    elif grid[0][1] == ABATIDO:    coste += 2
+
+    # --- FILA 2: META -> ABATIDO ---
+    # Coste de ir a ABATIDO:
+    # Desde NORMAL = 2
+    # (No pueden estar desplazados según tus operadores)
+    
+    # Doble [1][0]
+    if grid[1][0] == NORMAL: coste += 2
+    
+    # Derecho [1][1]
+    if grid[1][1] == NORMAL: coste += 2
+
+    # --- FILA 3: META -> NORMAL ---
+    # Coste de volver a NORMAL:
+    # Desde ABATIDO = 2
+    
+    # Izquierdo [2][0]
+    if grid[2][0] == ABATIDO: coste += 2
+        
+    # Derecho [2][1]
+    if grid[2][1] == ABATIDO: coste += 2
+
+    return coste
 
 estado_inicial = tEstado([
     [DESPLAZADO, DESPLAZADO], # Fila 1: Piloto, Copiloto
