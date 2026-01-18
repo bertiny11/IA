@@ -55,5 +55,5 @@ def aplicaOperador(estado: tEstado, op: str) -> tEstado:
     return nuevo
 
 def TestObjetivo(estado: tEstado)-> bool:
-    if(estado.Ladrones > estado.Banco):
+    if(len(estado.fila) == 0 and estado.Ladrones > estado.Banco):
         return True
