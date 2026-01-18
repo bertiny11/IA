@@ -4,6 +4,7 @@ import copy
 
 operadores = ["Ladron_Izquierda", "Ladron_Derecha", "Extrae_Banco"]
 
+@dataclass
 class tEstado:
     fila: list
     Ladrones: int
